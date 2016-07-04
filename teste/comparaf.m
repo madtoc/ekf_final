@@ -3,8 +3,8 @@ clc
 height=720;
 w=1200;
 ang=0;
-name='grav1-25d';
-px=1.1/height;
+name='grav1-150f-40esq-tras';
+    px=1.1/height;
 
 %figure('units','normalized','outerposition',[0 0 1 1])
 
@@ -46,12 +46,18 @@ for i=1:nFrames-1
     zIR = IR_raw2measure(ir_raw(i,:))';
     [z,H,h] = Hz(room,x,zIR);
     if (~isempty(z))
+        %H=[H(1,:); H(3,:); H(5,:)];
+        %h=[h(1);h(3);h(5)];
+        %z=[z(1);z(3);z(5)];
        [x,P] = k_up(x,P,H,h,z);
     end
     ang=adjust([data(i,1:2) u(i,1:2)],dt);
     [x,P]=k_pred2(x,P,[u(i,1) ang],dt);
     xe(i,:)=[x(1) x(2)];
-    ir_(i)=z(3);
+    %store values to evaluate var
+    me_r(i,:)=real_dist(room,[centroids(1)*px centroids(2)*px x(3)]);
+    me_h(i,:)=h;
+    %
    plot(centroids(1)*px, (height-centroids(2))*px, 'ko', 'MarkerSize', 3, 'LineWidth', 1);
    hold on
    plot(x(1),x(2),'ro', 'MarkerSize', 3, 'LineWidth', 1)

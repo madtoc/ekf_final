@@ -1,10 +1,12 @@
 function [ x,P ] = k_up(x,P,H,h,z)
 %UNTITLED12 Summary of this function goes here
 %   Detailed explanation goes here
-    R = 0.0025;    
+    %R = ones(5,1)*0.0025;
+    R = [0.0192935267139390,0.0482512105765177,0.0427594126596264,0.0615188227723853,0.0192934361401392];
+    %R = [ 0.0025 0.01 0.0025 0.01 0.0025];
     n = length(z);
     I = eye(length(P));
-    R = R*eye(n)    ;
+    R = diag(R);
     S = H * P * transpose(H) + R;
     K = P*transpose(H)*inv(S);
     y=z-h;
